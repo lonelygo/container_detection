@@ -1,0 +1,28 @@
+item {
+  id: 1
+  name: 'container_number'
+}
+
+item {
+  id: 2
+  name: 'container_number_v'
+}
+
+item {
+  id: 6
+  name: 'container_number_e'
+}
+
+item {
+  id: 3
+  name: 'container_door'
+}
+item {
+  id: 4
+  name: 'container_end_door'
+}
+
+item {
+  id: 5
+  name: 'container'
+}
