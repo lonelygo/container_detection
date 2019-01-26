@@ -25,10 +25,9 @@ import collections
 import functools
 # Set headless-friendly backend.
 # Use Agg can not show image
-# import matplotlib; matplotlib.use('Agg')  # pylint: disable=multiple-statements
-
-from matplotlib import pyplot as plt  # pylint: disable=g-import-not-at-top
+# import matplotlib; matplotlib.use('Agg')  
 import matplotlib
+from matplotlib import pyplot as plt  
 import os
 import numpy as np
 import PIL.Image as Image

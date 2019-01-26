@@ -1,42 +1,112 @@
-# Container detection and container number OCR
-Container detection and container number OCR is a specific project requirement, and using [Tensorflow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection) to verify feasibility is one of the quickest and simplest way.
+# Container detection and container number OCR using Tensorflow Object Detection API and Tesseract
 
-# 说明
-## 写在前面的话
->&ensp;&ensp;&ensp;&ensp;两年多之前我在“ex公司”的时候，有一个明确的项目需求是集装箱识别并计数，然后通过集装箱号OCR识别记录每一个集装箱号，然后与其余业务系统的数据进行交换，以实现特定的需求。正好Tensorflow Object Detection API 发布了，就放弃了YOLO或者SSD的选项，考虑用TF实现Demo做POC验证了。<br>
-&ensp;&ensp;&ensp;&ensp;之前也并未接触过Deep Learning相关的事情，为了验证这个需求可以实现并满足交付要求，从入门到了解到选择到学习到准备图片并标注到完成基本的Python Demo验证一个人前后差不多用了2个月时间（那时候用的还是12年中的MacBook Air），验证完成后，交给了C++和C#的小伙伴们去实现。在这个过程中感受到了Deep Learning的魅力与强大以及对于未来的无限可能，就带着我的研发小伙伴们走向这条路前进了，人脸、语音这些都尝试了，也都嵌入了已有都产品中，也不会因为只有第三方算法而各种踩坑了。<br>
-&ensp;&ensp;&ensp;&ensp;最近重装了Mac，重做一遍这个demo验证下Inteld对于CPU的DL支持有多大改善。
-### 主要内容
-#### 1、明确要具体解决的问题
-&ensp;&ensp;&ensp;&ensp;这个事情的需求有两个关键点：1. 如何准确识别集装箱，识别后如何去重才能保证“计数”的准确；2. 如何在单摄像头且非约束的场景下做集装箱号的OCR。已有的解决方案，集装箱识别——没有；集装箱号OCR——有，但是都是约束场景下的识别，即集装箱与摄像头的位置关系有明确限制且很有可能使用多达3个摄像头做联合判断后输出结果，与实际场景不符，等于没有。<br>
-&ensp;&ensp;&ensp;&ensp;所以这个需求能否实现，关键就在于单摄像头非约束场景下的detection与OCR了。
-#### 2、为什么不用SSD与YOLO
-&ensp;&ensp;&ensp;&ensp;这两个都很快，识别准确率也足够，之前确实考虑选其中之一来实现，但是想明白了这件事怎么做，也准备好了几千张图片准备验证的时候 Object Detection API 发布了，DL这种对未来影响深远的事情，选择一个最有可能成为大生态环境的平台就很重要了，Google虽然之前有“说关就关”的“前科”但是在我的理解不论软件还是硬件层面，DL的inference能力就是未来的OS之上最重要的事情了，甚至可以理解为就是OS的一部分（比如SoC），所以，这事情Google任性可能性微乎其微，从这两年发展来看，Google对TF持续投入，而且做为“大厂”的标志之一似乎就是你有没有开源的DL相关工作。
-#### 3、当时不担心搞不定么？
-&ensp;&ensp;&ensp;&ensp;担心，真的担心搞不定，所以连一块1080Ti的采购都没敢提，前期工作全部用我的12年老MBA完成的。就是由于真的怕搞不定，所以我没有玩弄所谓的“权术”。我是公司的研发总，所以理论上，我把这个Demo的预研工作交出去，找两个人去搞定，搞定了我工作依然完成了，搞不定我还有“替死鬼”。我也不是没事干，产品、架构、评审、项目、质量保证、销售以及没完没了的各种会议，但是这个事情真没底，不知道能不能搞定，安排工作简单，但是安排自己都没把握的工作出去虽然是一种“管理智慧”，但是不是本人做事、为人风格。于是就白天干工作职责之内的事情，下班后再来做这件事，能通宵就通宵，周末？周末是不可能有的。所以说起来2个月时间，其实是2个月的业余时间。<br>
-&ensp;&ensp;&ensp;&ensp;DL2018年持续火爆，想上车的同学越来越多，在此如果你机会看到这段文字，那么我可以负责任的告诉你：只要你全情投入，肯定可以上车并且走的很远。
-## 基本pipeline
-### 定义目标
-……待补充
+Container detection and container number OCR is a specific project requirement, using [Tensorflow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection) and [Tesseract](https://github.com/tesseract-ocr/tesseract)to verify feasibility is one of the quickest and simplest ways.
 
-### 采集数据、标注
-……待补充
+>两年多之前我在“ex公司”的时候，有一个明确的项目需求是集装箱识别并计数，然后通过集装箱号OCR识别记录每一个集装箱号，然后与其余业务系统的数据进行交换，以实现特定的需求。正好Tensorflow Object Detection API 发布了，就放弃了YOLO或者SSD的选项，考虑用TF实现Demo做POC验证了。具体需求实现的思考与pipeline构想思考参见这篇文章：[Container detection and container number OCR](https://lonelygo.github.io/2019-01-20-container-detection/) 。  
 
-### 选择模型、训练
-……待补充
+## 用法
 
-### pipeline的demo实现
-……待补充
+### Tensorflow Object Detection API 安装
 
-# 用法
+具体安装参考官方[说明](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/installation.md)。  
 
-……待补充
+### 环境与依赖
 
+本人使用的环境是：macOS 10.14.2，python 3.6.8，TF 1.12
+除了Tensorflow Object Detection API 安装必备的依赖外，还需要以下依赖：
+tesseract
+pytesseract
+具体安装及用途，请自行Google。
+`visualization_utils.py`中:
 
-# 相关资源
-……待补充
+``` python
+import matplotlib; matplotlib.use('Agg')
+```
 
-# 参考
+Agg在我的环境下用不了，也懒得折腾，所以把这句改了。
+
+### 数据集准备
+
+参考PascalVOC的数据集格式，使用[LabelImg](https://github.com/tzutalin/labelImg)进行标注。  
+标注完成后可以使用`generate_voc_datasets.py`按你的想法分割数据集为：train 、val 与 test这个三个data set。
+分割为三个data set后，可以使用`create_pascal_tf_record.py`转换为TF record格式data set文件供TF使用（此文件官方提供，在`/object_detection/dataset_tools/`）。  
+有关数据准备的内容，可以参考这里的[说明](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/using_your_own_dataset.md)。
+
+### 训练
+
+参考[官方说明-本地](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_locally.md)使用官方代码库中的`model_main.py`在本地训练(以前是train 和 val 分别提供了两个版本，目前版本用这一个文件就可以了。)。
+参考[官方说明——Google Cloud ML Engine](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/running_on_cloud.md)在Google Cloud ML Engine上使用TPU训练，资费说明在[这里](https://cloud.google.com/ml-engine/docs/tensorflow/pricing?hl=zh-CN)，可以选择“竞争”模式使用，会便宜很多。
+
+### 验证
+
+可以使用官方代码中的`object_detection_tutorial.ipynb`做快速验证尝试。本repo中的`detection_var_image.py`也主要参考这个ipynp实现的。
+以下几个位置需要根据你自己的实际情况来修改：
+
+``` python
+
+MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+PATH_TO_FROZEN_GRAPH = MODEL_NAME + '/frozen_inference_graph.pb'
+# List of the strings that is used to add correct label for each box.
+PATH_TO_LABELS = os.path.join('data', 'container_label_map.pbtxt')
+
+TEST_IMAGE_PATHS = [os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(1, 4)]
+
+lang = 'cont41'
+
+```
+
+其中`lang = 'cont41'`中的`cont41`是trsseract使用的lang文件的名字，如果你还没有来得及自己训练lang文件，可以把`lang_use = 'eng+'+lang+'+letsgodigital+snum+eng_f'`中的其余内容都删了，仅保留`eng`，使用tesseract安装默认带的lang文件进行识别。  
+返回的`image_label`为一个嵌套列表，会是这个样子：  
+
+``` python
+
+[{'image1': [{'lable': 'container_number', 'actual': '100%', 'cont_num': 'TCLU § 148575 3\n45G1', 'image_corp_name': 'image1_1_container_number'}]}, {'image2': [{'lable': 'container_number', 'actual': '99%', 'cont_num': 'TRNU816699 4 |\n45G1', 'image_corp_name': 'image2_1_container_number'}, {'lable': 'container_number', 'actual': '99%', 'cont_num': 'TCNU89092898\n4561', 'image_corp_name': 'image2_2_container_number'}, {'lable': 'container_number', 'actual': '99%', 'cont_num': 'MSKUY 86801264\n4561', 'image_corp_name': 'image2_3_container_number'}]}]
+
+```
+
+每个索引对应一个字典，字典的：  
+`key`为输入的图片名称；  
+`value`为一个列表，列表的索引对应的是由4个key构成的字典，分别是标签、置信度、OCR的结果以及输出的裁剪后的集装箱号图片的名称，索引数量则代表了在图片中找到的集装箱号。
+
+主要是考虑如果再用flask做个Web，可以直接用flask简单做个服务端，把检测的结果JSON串一次性抛出来，Demo环节没必要再单独折腾TensorFlow Serving部署一个后端。
+
+对于每张输入的图片，除了上述JOSN输出外，还输出：  
+绘制了Bounding box 与 label 的图片；
+集装箱号位置的裁剪图片（有几个裁几个），以及使用openCV做了预处理后丢入tesseract之前的图片。通过对比图片与OCR结果，可以给我们调整图片预处理的思路与参数。
+
+#### Demo
+
+`image`文件夹下有5张测试图片，测试结果在`cont_num.txt`中，部分如下：
+
+| 图片名 | OCR结果 | 实际 |
+|:------:|:------:|:----:|
+| image1_1_container_number_100% | TCLU § 148575 3 45G1 | TCLU 148575 3 45G1 |
+|image2_1_container_number_99% | TRNU816699 4 \| 45G1 | TRLU 818699 0 45G1 |
+| image2_2_container_number_99% | TCNU89092898 4561 | TCNU 869248 8 45G1 |
+| image2_3_container_number_99% | MSKUY 86801264 4561 | MSKU 868012 6 4561 |
+| image3_1_container_number_99% | x L BOUL 871489 7 \| 221 | BMOU 871489 7 22R1 |
+| image3_2_container_number_99% | FCIU [599867 (0 22G1 | FCIU 599887 0 22G1 |
+
+可以看到，OCR的整体准确率并不高，可以说，与我在[Container detection and container number OCR](https://lonelygo.github.io/2019-01-20-container-detection/)中预估的准确率不超过8成是匹配的（现在看肯定是事后诸葛亮，但在当时下决心做验证的时候是这么一个真实预测）。这个准确率并不是没有提高可能的，实际上在以下几个方面可以继续做一些工作进行尝试：
+
+- 因为Tesseract训练用的图片质量大多和`image1.jpg`接近，所以需要调整训练集的图片质量，使其比较符合工程场景图像质量；
+- 工程场景下，尽量保证图像质量，并且通过工程现场使用，收集图片；
+- 图片收集足够数量后，OCR引擎转变为深度学习版本的；
+- 改善OCR之前的图像预处理策略，事实上，我在换了其他的预处理策略后，结果是可以优于上述表现的。
+
+其中，`image1.jpg`输出图片分别如下：
+![Bounding box](https://ws1.sinaimg.cn/large/55fc1144gy1fzkay5dqltj20qo0zk42p.jpg)
+
+![original](https://ws1.sinaimg.cn/large/55fc1144gy1fzkaz64bcxj209t03ydfr.jpg)
+
+![gray](https://ws1.sinaimg.cn/large/55fc1144gy1fzkazp3xcij209t03ywel.jpg)
+
+#### To Do
+
+- [x] 增加使用视频流检测的Demo版本
+- [x] 用flask增加一个简单的Web上传与显示结果的页面
+
+#### 参考
 
 [Tensorflow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection)
 

@@ -6,16 +6,18 @@ __author__ = 'Kevin Di'
 import os
 import random 
  
-# xml文件及Main文件夹位置。
+# VOC like data_set file path.
 
-xml_file = r'/Users/kevin/Documents/Tensorflow/container_detection/data_set/cont_voc/Annotations'
-img_file = r'/Users/kevin/Documents/Tensorflow/container_detection/data_set/cont_voc/JPEGImages'
-save_path = r'/Users/kevin/Documents/Tensorflow/container_detection/data_set/cont_voc/ImageSets/Main'
+xml_file = r'path to your VOC like data_set: /Annotations'
+img_file = r'path to your VOC like data_set:/JPEGImages'
+save_path = r'path to your VOC like data_set: /ImageSets/Main'
 
-# 确定train、val、test拆分比例，先分拆出来train_val与test，再从train_val中分拆出train与val。
 
-train_val_percent = 1
-train_percent = 0.9
+# Determine the train, val, test split ratio.
+# The frist step is split the train_val and test, and then split the train and val from the train_val.
+
+train_val_percent = 0.8
+train_percent = 0.8
 total_dataset_num = os.listdir(xml_file)
 total_img_num = os.listdir(img_file)
 num = len(total_dataset_num)

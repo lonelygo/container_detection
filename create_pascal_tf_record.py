@@ -39,14 +39,14 @@ from object_detection.utils import label_map_util
 
 
 flags = tf.app.flags
-flags.DEFINE_string('data_dir', '/Users/kevin/Documents/Tensorflow/container_detection/data_set', 'Root directory to raw PASCAL VOC dataset.')
+flags.DEFINE_string('data_dir', '', 'Root directory to raw PASCAL VOC dataset.')
 flags.DEFINE_string('set', 'val', 'Convert training set, validation set or '
                     'merged set.')
 flags.DEFINE_string('annotations_dir', 'Annotations',
                     '(Relative) path to annotations directory.')
 flags.DEFINE_string('year', 'cont_train', 'Desired challenge year.')
-flags.DEFINE_string('output_path', '/Users/kevin/Documents/Tensorflow/container_detection/data_set/cont_val.record', 'Path to output TFRecord')
-flags.DEFINE_string('label_map_path', '/Users/kevin/Documents/Tensorflow/container_detection/data_set/container_label_map.pbtxt',
+flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
+flags.DEFINE_string('label_map_path', '',
                     'Path to label map proto')
 flags.DEFINE_boolean('ignore_difficult_instances', False, 'Whether to ignore '
                      'difficult instances')
